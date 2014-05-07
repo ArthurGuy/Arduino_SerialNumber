@@ -36,20 +36,20 @@ void SerialNumber::fetchNumber()
 		//Compare the two CRC bytes
 	    if (crc_calc != crc_byte) {
 			//The data is invalid - the crc check failed
-	    	dataFetched = false;
+	    	_dataFetched = false;
 	    } else {
-	    	dataFetched = true;
+	    	_dataFetched = true;
 	    }
 	}
 	else //Nothing is connected in the bus
 	{
-	    dataFetched = false;
+	    _dataFetched = false;
 	}
 }
 
 byte SerialNumber::getPart(int i)
 {
-	if (!dataFetched) {
+	if (!_dataFetched) {
 		return false;
 	}
 	return data[i];
@@ -58,7 +58,7 @@ byte SerialNumber::getPart(int i)
 
 String SerialNumber::getNumber()
 {
-	if (!dataFetched) {
+	if (!_dataFetched) {
 		return false;
 	}
 	//Concatinate the serial number string and return
@@ -68,4 +68,9 @@ String SerialNumber::getNumber()
         String(data[4]/16, HEX)+String(data[4]%16, HEX)+
         String(data[5]/16, HEX)+String(data[5]%16, HEX)+
         String(data[6]/16, HEX)+String(data[6]%16, HEX);
+}
+
+boolean SerialNumber::numberReady()
+{
+	return _dataFetched;
 }

@@ -19,6 +19,7 @@ class SerialNumber
     void fetchNumber();
     String getNumber();
     byte getPart(int i);
+    boolean numberReady();
     
   private:
     // A pointer to the one wire instance
@@ -30,7 +31,7 @@ class SerialNumber
     //Store the data comming off the device
     byte data[8];
     
-    boolean dataFetched;
+    boolean _dataFetched;
     
     //CRC Check
     //The calculated value
