@@ -1,3 +1,3 @@
 SerialNumber
 ====================
-Fetch a serial number or device id from a dalas DS2401
+Fetch a serial number or device id from a Maxim DS2401
