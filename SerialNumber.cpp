@@ -8,13 +8,13 @@
 SerialNumber::SerialNumber(OneWire* _oneWire)
 {
 	_wire = _oneWire;
+	
+	SerialNumber::fetchNumber();
 }
 
-
-//Fetch the return the formatted serial number
-String SerialNumber::getNumber()
+void SerialNumber::fetchNumber()
 {
-  	//1-Wire bus reset, needed to start operation on the bus,
+	//1-Wire bus reset, needed to start operation on the bus,
   	//returns true if presence pulse detected - i.e. the device is there
   	if (_wire->reset())
   	{
@@ -36,14 +36,31 @@ String SerialNumber::getNumber()
 		//Compare the two CRC bytes
 	    if (crc_calc != crc_byte) {
 			//The data is invalid - the crc check failed
-	    	return false;
+	    	dataFetched = false;
+	    } else {
+	    	dataFetched = true;
 	    }
 	}
 	else //Nothing is connected in the bus
 	{
-	    return false;
+	    dataFetched = false;
 	}
+}
 
+byte SerialNumber::getPart(int i)
+{
+	if (!dataFetched) {
+		return false;
+	}
+	return data[i];
+}
+
+
+String SerialNumber::getNumber()
+{
+	if (!dataFetched) {
+		return false;
+	}
 	//Concatinate the serial number string and return
   	return String(data[1]/16, HEX)+String(data[1]%16, HEX)+
         String(data[2]/16, HEX)+String(data[2]%16, HEX)+
@@ -52,4 +69,3 @@ String SerialNumber::getNumber()
         String(data[5]/16, HEX)+String(data[5]%16, HEX)+
         String(data[6]/16, HEX)+String(data[6]%16, HEX);
 }
-
