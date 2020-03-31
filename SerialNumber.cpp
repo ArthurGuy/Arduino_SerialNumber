@@ -49,9 +49,6 @@ void SerialNumber::fetchNumber()
 
 byte SerialNumber::getPart(int i)
 {
-	if (!_dataFetched) {
-		return false;
-	}
 	return data[i];
 }
 
@@ -59,7 +56,7 @@ byte SerialNumber::getPart(int i)
 String SerialNumber::getNumber()
 {
 	if (!_dataFetched) {
-		return false;
+		return "";
 	}
 	//Concatinate the serial number string and return
   	return String(data[1]/16, HEX)+String(data[1]%16, HEX)+
